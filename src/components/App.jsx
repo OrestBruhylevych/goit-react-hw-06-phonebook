@@ -4,12 +4,16 @@ import { Filter } from './Filter/Filter';
 import { MyForm } from './Form/MyForm';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { addContacts } from '../redux/contacts/slice';
+import {
+  addContacts,
+  getContactsArray,
+  getFilter,
+} from '../redux/contacts/slice';
 
 export function App() {
   const dispatch = useDispatch();
-  const contactsArray = useSelector(state => state.contacts.items);
-  const filter = useSelector(state => state.contacts.filter);
+  const contactsArray = useSelector(getContactsArray);
+  const filter = useSelector(getFilter);
 
   const addConntacts = value => {
     const nameLowerCase = value.name.toLowerCase();
