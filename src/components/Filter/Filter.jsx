@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { chagneFilter } from '../../redux/contacts/slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { chagneFilter, getFilter } from '../../redux/contacts/slice';
 
 import { FilterStyled } from './Filter.styled';
 
-export const Filter = ({ value }) => {
+export const Filter = () => {
   const dispatch = useDispatch();
+  const valueFilter = useSelector(getFilter);
 
   return (
     <FilterStyled>
@@ -13,13 +13,9 @@ export const Filter = ({ value }) => {
       <input
         name="filter"
         type="text"
-        value={value}
+        value={valueFilter}
         onChange={e => dispatch(chagneFilter(e.currentTarget.value))}
       />
     </FilterStyled>
   );
-};
-
-Filter.propTypes = {
-  value: PropTypes.string.isRequired,
 };

@@ -1,7 +1,9 @@
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContacts, getContactsArray } from '../../redux/contacts/slice';
+
 import { StyledForm, ErrorText } from './MyForm.styled';
 
 const validationSchema = Yup.object({
@@ -9,14 +11,32 @@ const validationSchema = Yup.object({
   number: Yup.string().required('Number is required'),
 });
 
-export const MyForm = ({ onSubmit }) => {
+export const MyForm = () => {
+  const dispatch = useDispatch();
+  const contactsArray = useSelector(getContactsArray);
+
+  const addConntacts = value => {
+    const nameLowerCase = value.name.toLowerCase();
+
+    const newContact = contactsArray.find(
+      contact => contact.name.toLocaleLowerCase() === nameLowerCase
+    );
+
+    if (newContact) {
+      window.alert(`${value.name} is already in contacts.`);
+      return;
+    }
+
+    dispatch(addContacts(value));
+  };
+
   return (
     <Formik
       initialValues={{ name: '', id: '', number: '' }}
       validationSchema={validationSchema}
       onSubmit={(values, { resetForm }) => {
         values.id = nanoid();
-        onSubmit(values);
+        addConntacts(values);
         resetForm();
       }}
     >
@@ -51,8 +71,4 @@ export const MyForm = ({ onSubmit }) => {
       </StyledForm>
     </Formik>
   );
-};
-
-MyForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };
