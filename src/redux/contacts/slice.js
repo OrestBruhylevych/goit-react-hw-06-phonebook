@@ -24,11 +24,12 @@ const contactsSlice = createSlice({
 
 const persistConfig = {
   key: 'contacts',
+  version: 1,
   storage,
   whitelist: ['items'],
 };
 
-export const contactsReducer = persistReducer(
+export const persistedReducer = persistReducer(
   persistConfig,
   contactsSlice.reducer
 );
